@@ -29,11 +29,14 @@ defmodule Discuss.TopicController do
     # pass a new topic struct/object to the changeset for validation
     changeset = Topic.changeset(%Topic{}, topic)
     # insert changeset into database
-    topics = Repo.all(Topic)
     case Repo.insert(changeset) do
       # case statement for the return value of Repo.insert
       # Repo.insert returns a tuple 
-      {:ok, post} -> render conn, "index.html", topics: topics
+      {:ok, post} -> 
+        conn 
+        |> put_flash(:info, "Topic Created")
+        # redirect to index path => specify to, pass connection and specify the controller action
+        |> redirect(to: topic_path(conn, :index))
       # if it doesnt save, we re-render the new view.
       {:error, changeset} -> render conn, "new.html", changeset: changeset
     end
