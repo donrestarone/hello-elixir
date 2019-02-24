@@ -4,6 +4,7 @@ defmodule Cards do
     values = ["Ace", "Two", "Three"]
     suits = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
+    # for each suit in array of suits, behaves like .map(())
     for suit <- suits do 
       suit
     end 
