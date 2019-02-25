@@ -22,9 +22,18 @@ defmodule Discuss.Router do
     get "/topics/:id/edit", TopicController, :edit
     put "/topics/:id", TopicController, :update
     delete "/topics/:id", TopicController, :delete
+
     # ^^ to generate the above, use a resources helper
     # resources "/", TopicController
   end
+
+  scope "/auth", Discuss do
+    # for Oauth via github, scoping everything to /auth/* namespace
+    pipe_through :browser # Use the default browser stack
+    # request method is automatically defined by ueberauth module. Provider will be subbed in by ueberauth for github/facebook whatever strategy you have configured. This is for the initial o auth request
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end 
 
   # Other scopes may use custom stacks.
   # scope "/api", Discuss do
