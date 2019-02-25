@@ -9,3 +9,16 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will halt execution if something goes wrong.
+ alias Discuss.Repo
+alias Discuss.Topic
+
+
+
+for x <- 0..13000 do 
+  Repo.insert %Topic{
+    title: Faker.Lorem.Shakespeare.Ru.as_you_like_it()
+  }
+  Repo.insert %Topic{
+    title: Faker.Lorem.Shakespeare.En.as_you_like_it()
+  }
+end
