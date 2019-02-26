@@ -10,7 +10,7 @@ defmodule Discuss.TopicController do
     # # get the connection coming from the client. 
     # # params 
     # IO.puts "+++"
-    # IO.inspect conn
+    # IO.inspect(conn.assigns)
     # IO.puts "+++"
     # IO.inspect params
 
@@ -45,6 +45,9 @@ defmodule Discuss.TopicController do
   def index(conn, _params) do
     # to get all the topics from the database
     topics = Repo.all(Topic)
+    IO.puts "+++"
+    IO.inspect(conn.assigns)
+    IO.puts "+++"
     render conn, "index.html", topics: topics
   end
 
