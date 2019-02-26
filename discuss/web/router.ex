@@ -32,6 +32,7 @@ defmodule Discuss.Router do
     # for Oauth via github, scoping everything to /auth/* namespace
     pipe_through :browser # Use the default browser stack
     # request method is automatically defined by ueberauth module. Provider will be subbed in by ueberauth for github/facebook whatever strategy you have configured. This is for the initial o auth request
+    get "/signout", AuthController, :signout
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
   end 
