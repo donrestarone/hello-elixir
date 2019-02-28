@@ -9,7 +9,8 @@ defmodule Discuss.User do
     field :token, :string
     # has many topics, a topic is an 'instance'(not really, but you get it) of Discuss.Topic
     has_many :topics, Discuss.Topic
-
+    has_many :comments, Discuss.Comment
+    
     timestamps()
   end
 
