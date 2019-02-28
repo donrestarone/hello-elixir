@@ -51,6 +51,11 @@ defmodule Discuss.TopicController do
     end
   end
 
+  def show(conn, %{"id" => topic_id}) do
+    topic = Repo.get!(Topic, topic_id)
+    render conn, "show.html", topic: topic
+  end
+
   def index(conn, _params) do
     # to get all the topics from the database
     topics = Repo.all(Topic)
