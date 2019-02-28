@@ -6,11 +6,17 @@ defmodule Discuss.TopicController do
   # if you want to reference Discuss.Topic as simply Topic
   alias Discuss.Topic 
 
+  # run the plug for the actions listed in the array, similar to before_action
+  plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+
+  # ^^ this function plug operates the same way as the module plug above
+  plug :check_topic_owner when action in [:update, :edit, :delete]
+
   def new(conn, _params) do
     # # get the connection coming from the client. 
     # # params 
     # IO.puts "+++"
-    # IO.inspect conn
+    # IO.inspect(conn.assigns)
     # IO.puts "+++"
     # IO.inspect params
 
@@ -26,8 +32,11 @@ defmodule Discuss.TopicController do
 
   def create(conn, %{"topic" => topic}) do
     # pattern match to get the topic object out of params
-    # pass a new topic struct/object to the changeset for validation
-    changeset = Topic.changeset(%Topic{}, topic)
+    # take the current user from the connection, pipe it down to build association (user has many topics). this returns a topic which is then piped into Topic.changeset to cast a changeset which is to be inserted to the database
+    changeset = conn.assigns.user
+    |> build_assoc(:topics)
+    |> Topic.changeset(topic)
+
     # insert changeset into database
     case Repo.insert(changeset) do
       # case statement for the return value of Repo.insert
@@ -45,6 +54,9 @@ defmodule Discuss.TopicController do
   def index(conn, _params) do
     # to get all the topics from the database
     topics = Repo.all(Topic)
+    IO.puts "+++"
+    IO.inspect(conn.assigns)
+    IO.puts "+++"
     render conn, "index.html", topics: topics
   end
 
@@ -81,5 +93,11 @@ defmodule Discuss.TopicController do
     conn 
     |> put_flash(:info, "Topic Deleted")
     |> redirect(to: topic_path(conn, :index))
+  end
+
+  defp check_topic_owner(conn, _params) do
+    # use pattern matching to get the topic id from the connection
+    # get topic_id from params.id basically
+    %{params: %{"id" => topic_id}} = conn
   end
 end
