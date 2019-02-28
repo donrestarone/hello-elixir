@@ -6,6 +6,9 @@ defmodule Discuss.TopicController do
   # if you want to reference Discuss.Topic as simply Topic
   alias Discuss.Topic 
 
+  # run the plug for the actions listed in the array, similar to before_action
+  plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+
   def new(conn, _params) do
     # # get the connection coming from the client. 
     # # params 
