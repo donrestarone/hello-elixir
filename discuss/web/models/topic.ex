@@ -1,10 +1,12 @@
 defmodule Discuss.Topic do
   # 'inherit' from model 
   use Discuss.Web, :model
+# ex delete all topics; Discuss.Repo.delete_all(Discuss.Topic)
 
   # schema for title as string datatype
   schema "topics" do
     field :title, :string
+    belongs_to :user, Discuss.User
   end
 
   # changeset for validation
