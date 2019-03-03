@@ -1,5 +1,7 @@
 defmodule Discuss.Comment do 
   use Discuss.Web, :model
+  # json serializer 
+  @derive {Poison.Encoder, only: [:content, :user_id, :topic_id]}
 
   schema "comments" do
     field :content, :string
