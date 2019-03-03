@@ -13,6 +13,10 @@ const createSocket = (topicId) => {
         renderComments(resp.comments)
      })
     .receive("error", resp => { console.log("Unable to join", resp) })
+    
+    // this is to listen to the event broadcasted by handle_in function in the comments channel
+    // when that event fires, we will run render comment
+    channel.on(`comments:${topicId}:new`, renderComment)
 
     document.querySelector('button').addEventListener('click', () => {
       const content = document.querySelector('textarea').value
@@ -21,16 +25,27 @@ const createSocket = (topicId) => {
       channel.push('comment:add', {content: content})
     })
 }
+
+const renderComment = (event) => {
+  const renderedComment = commentTemplate(event.comment)
+
+  document.querySelector('.collection').innerHTML += renderedComment
+
+}
+const commentTemplate = (commentObject) => {
+  return `
+    <li class="collection-item">
+      ${commentObject.content}
+    </li>
+  `
+}
 const renderComments = (comments) => {
   const renderedComments = comments.map((comment, index) => {
-    return `
-      <li class="collection-item">
-        ${comment.content}
-      </li>
-    `
+    return (commentTemplate(comment))
   })
   document.querySelector('.collection').innerHTML = renderedComments.join('')
 }
+
 
 
 
