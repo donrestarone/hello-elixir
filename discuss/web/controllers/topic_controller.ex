@@ -51,6 +51,11 @@ defmodule Discuss.TopicController do
     end
   end
 
+  def show(conn, %{"id" => topic_id}) do
+    topic = Repo.get!(Topic, topic_id)
+    render conn, "show.html", topic: topic
+  end
+
   def index(conn, _params) do
     # to get all the topics from the database
     topics = Repo.all(Topic)
@@ -99,5 +104,14 @@ defmodule Discuss.TopicController do
     # use pattern matching to get the topic id from the connection
     # get topic_id from params.id basically
     %{params: %{"id" => topic_id}} = conn
+
+    if Repo.get(Topic, topic_id).user_id == conn.assigns.user.id do
+      conn
+    else 
+      conn 
+      |> put_flash(:error, "you cannot edit that")
+      |> redirect(to: topic_path(conn, :index))
+      |> halt()
+    end
   end
 end

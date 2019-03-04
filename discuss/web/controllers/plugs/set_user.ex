@@ -9,6 +9,7 @@ defmodule Discuss.Plugs.SetUser do
   end
 
   def call(conn, _params) do
+    # gets run each time
     user_id = get_session(conn, :user_id)
 
     cond do 
