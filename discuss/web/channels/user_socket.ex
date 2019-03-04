@@ -9,6 +9,13 @@ defmodule Discuss.UserSocket do
 
   # get the token from the params passed from socket.js
   def connect(%{"token" => token}, socket) do
+    # the "key" is the key we used to encode the token, replace it with a secret soon
+    case Phoenix.Token.verify(socket, "key", token) do
+      {:ok, user_id} -> 
+        {:ok, assign(socket, :user_id, user_id)}
+      {:error, _error} -> 
+        :error
+    end
     {:ok, socket}
   end
 
