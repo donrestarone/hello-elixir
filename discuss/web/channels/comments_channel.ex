@@ -23,9 +23,6 @@ defmodule Discuss.CommentsChannel do
     case Repo.insert(changeset) do
       {:ok, comment} -> 
         # broadcast the event, when a new comment is successfully created
-        IO.puts("+++++++++")
-        IO.inspect(socket.assigns.topic.id)
-        IO.puts("+++++++++")
         broadcast!(socket, "comments:#{socket.assigns.topic.id}:new", %{comment: comment})
         {:reply, :ok, socket}
       {:error, _reason} -> 
