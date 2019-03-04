@@ -6,7 +6,8 @@ defmodule Discuss.CommentsChannel do
   # vvvv `comments:${topicId}` grabs the topic id coming from js
   def join("comments:" <> topic_id, _params, socket) do
     topic_id = String.to_integer(topic_id)
-    topic = Topic |> Repo.get(topic_id) |> Repo.preload(:comments)
+    # get the topic, and load all the comments and the users that each comment is associated with
+    topic = Topic |> Repo.get(topic_id) |> Repo.preload(comments: [:user])
 
     # encode the topic id to the socket, so that handle_in will have access to it when associating comments with a topic
     # give the comments in a map 

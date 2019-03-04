@@ -1,6 +1,7 @@
 defmodule Discuss.User do
   use Discuss.Web, :model
 
+  @derive {Poison.Encoder, only: [:email, :id]}
   # rails c equivalent -> iex -S mix phoenix.server
   
   schema "users" do

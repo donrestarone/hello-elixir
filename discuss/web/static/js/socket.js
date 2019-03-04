@@ -8,9 +8,10 @@ const createSocket = (topicId) => {
   // pass the comment Id to the join function of the comments channel
   let channel = socket.channel(`comments:${topicId}`, {})
   channel.join()
-    .receive("ok", resp => { 
+    .receive("ok", response => { 
+        console.log(response)
         // this is where you get the comments/data the server is streaming
-        renderComments(resp.comments)
+        renderComments(response.comments)
      })
     .receive("error", resp => { console.log("Unable to join", resp) })
     
