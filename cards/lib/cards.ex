@@ -21,7 +21,7 @@ defmodule Cards do
     when an array of cards are passed in, returns a shuffled deck
   """
 
-  def shuffle(deck)do
+  def shuffle(deck) do
     Enum.shuffle(deck)
   end
 
@@ -38,7 +38,7 @@ defmodule Cards do
     when a deck & hand size is provided, returns a hand of cards
   ## Examples
         iex> deck = Cards.create_deck
-        iex> {hand, deck} = Cards.deal(deck, 1)
+        iex> hand = Cards.deal(deck, 1)
         iex> hand
         ["Ace of Spades"]
   """
