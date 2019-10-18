@@ -36,6 +36,11 @@ defmodule Cards do
 
   @doc """
     when a deck & hand size is provided, returns a hand of cards
+  ## Examples
+        iex> deck = Cards.create_deck
+        iex> {hand, deck} = Cards.deal(deck, 1)
+        iex> hand
+        ["Ace of Spades"]
   """
 
   def deal(deck, size) do 
